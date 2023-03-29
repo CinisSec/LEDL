@@ -1,4 +1,4 @@
-#EDL - Entertainment Downloader
+#LEDL - Local Entertainment Downloader
 #!/bin/bash
 
 #Check if folder exists
