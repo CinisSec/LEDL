@@ -62,7 +62,7 @@ function oldVnewCheck() {
 	read -p "Choice: [o/n] " ovn
 }
 
-function listAndCompare() {
+function listAndDownload() {
 	if [[ "$category" == "1" ]]; then
 		if [[ "$ovn" == "o" ]]; then
 			oldMoviesList
@@ -89,7 +89,7 @@ function listAndCompare() {
 if [ -d "/Volumes/Data/Shared" ]; then
 	categoryChoice
 	oldVnewCheck
-	listAndCompare
+	listAndDownload
 else
 	echo "Volume is not mounted"
 fi
