@@ -29,7 +29,6 @@ function newSeriesList() {
 function oldMoviesDownload() {
 	#TODO
 }
-
 function newMovieDownload() {
 	if [ -d ~/Movies/"$ms" ]; then
 		echo "Destination directory already exists downloading non-exsiting files..."
@@ -43,7 +42,6 @@ function newMovieDownload() {
 function oldSeriesDownload() {
 	#TODO
 }
-
 function newSeriesDownload() {
 	if [ -d ~/Movies/"$ms" ]; then
 		echo "Destination directory already exists downloading non-exsiting files..."
@@ -54,14 +52,12 @@ function newSeriesDownload() {
 		rsync -avz -r --progress /Volumes/Data/Shared/series/__new_series/*"$ms"* ~/Movies/"$ms"
 	fi
 }
-
 function oldVnewCheck() {
 	echo "Old or new entertainment?"
 	echo "[o] Old"
 	echo "[n] New"
 	read -p "Choice: [o/n] " ovn
 }
-
 function listAndDownload() {
 	if [[ "$category" == "1" ]]; then
 		if [[ "$ovn" == "o" ]]; then
@@ -82,9 +78,7 @@ function listAndDownload() {
 		fi
 	fi
 }
-
 #FUNCTIONS SECTION END
-
 #MAIN SECTION START
 if [ -d "/Volumes/Data/Shared" ]; then
 	categoryChoice
