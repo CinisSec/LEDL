@@ -9,7 +9,10 @@ function categoryChoice() {
 	read -p "Category choice: [1-2]" category
 }
 function oldMoviesList() {
-	#TODO
+	echo "This is a list of movies you already watched:"
+	echo ""
+	ls /Volumes/Data/Shared/movies/
+	read -p "Which movie do you wish to download?: " ms
 }
 function newMoviesList() {
 	echo "This is a list of movies you haven't watched yet:"
@@ -18,7 +21,10 @@ function newMoviesList() {
 	read -p "Which movie do you wish to download?: " ms
 }
 function oldSeriesList() {
-	#TODO
+	echo "This is a list of series you already watched:"
+	echo ""
+	ls /Volumes/Data/Shared/series/
+	read -p "Which series do you want to download?: " ms
 }
 function newSeriesList() {
 	echo "This is a list of series you haven't watched yet:"
@@ -27,7 +33,14 @@ function newSeriesList() {
 	read -p "Which series do you want to download?: " ms
 }
 function oldMoviesDownload() {
-	#TODO
+	if [ -d ~/Movies/"$ms" ]; then
+		echo "Destination directory already exists downloading non-exsiting files..."
+		rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/movies/*"$ms"* ~/Movies/"$ms"
+	else
+		echo "Creating download directory..."
+		mkdir ~/Movies/"$ms"/
+		rsync -avz -r --progress /Volumes/Data/Shared/movies/*"$ms"* ~/Movies/"$ms"
+	fi
 }
 function newMovieDownload() {
 	if [ -d ~/Movies/"$ms" ]; then
@@ -40,7 +53,14 @@ function newMovieDownload() {
 	fi
 }
 function oldSeriesDownload() {
-	#TODO
+	if [ -d ~/Movies/"$ms" ]; then
+		echo "Destination directory already exists downloading non-exsiting files..."
+		rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/series/*"$ms"* ~/Movies/"$ms"
+	else
+		echo "Creating download directory..."
+		mkdir ~/Movies/"$ms"/
+		rsync -avz -r --progress /Volumes/Data/Shared/series/*"$ms"* ~/Movies/"$ms"
+	fi
 }
 function newSeriesDownload() {
 	if [ -d ~/Movies/"$ms" ]; then
@@ -60,6 +80,7 @@ function oldVnewCheck() {
 }
 function listAndDownload() {
 	if [[ "$category" == "1" ]]; then
+		oldVnewCheck
 		if [[ "$ovn" == "o" ]]; then
 			oldMoviesList
 			oldMoviesDownload
@@ -68,7 +89,7 @@ function listAndDownload() {
 			newMovieDownload
 		fi
 	elif [[ "$category" == "2" ]]; then
-		oldVnew
+		oldVnewCheck
 		if [[ "$ovn" == "o" ]]; then
 			oldSeriesList
 			oldSeriesDownload
@@ -79,12 +100,13 @@ function listAndDownload() {
 	fi
 }
 #FUNCTIONS SECTION END
+
 #MAIN SECTION START
-if [ -d "/Volumes/Data/Shared" ]; then
+	if [ -d "/Volumes/Data/Shared" ]; then
 	categoryChoice
-	oldVnewCheck
 	listAndDownload
 else
 	echo "Volume is not mounted"
 fi
+
 #MAIN SECTION END
