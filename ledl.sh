@@ -6,20 +6,50 @@ function categoryChoice() {
 	echo "Which category do you want to download?"
 	echo "[1] movies"
 	echo "[2] series"
+	echo "[3] anime"
 	read -p "Category choice: [1-2]" category
 }
-function oldMoviesList() {
-	echo "This is a list of movies you already watched:"
+
+
+
+function oldAnimeList() {
+	echo "This is a list of anime that is available:"
 	echo ""
-	ls /Volumes/Data/Shared/movies/
-	read -p "Which movie do you wish to download?: " ms
+	ls /Volumes/Data/Shared/anime/
+	read -p "Which anime do you wish to download?: " ms
 }
-function newMoviesList() {
-	echo "This is a list of movies you haven't watched yet:"
+function newAnimeList() {
+	echo "This is a list of anime that is available:"
 	echo ""
-	ls /Volumes/Data/Shared/movies/__new_movies
-	read -p "Which movie do you wish to download?: " ms
+	ls /Volumes/Data/Shared/anime/__new_anime
+	read -p "Which anime do you wish to download?: " ms
 }
+
+function oldAnimeDownload () {
+	if [ -d ~/Movies/"$ms" ]; then
+		echo "Destination directory already exists downloading non-exsiting files..."
+		rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/anime/*"$ms"* ~/Movies/"$ms"
+	else
+		echo "Creating download directory..."
+		mkdir ~/Movies/"$ms"/
+		rsync -avz -r --progress /Volumes/Data/Shared/anime/*"$ms"* ~/Movies/"$ms"
+	fi
+}
+
+function newAnimeDownload () {
+	if [ -d ~/Movies/"$ms" ]; then
+		echo "Destination directory already exists downloading non-exsiting files..."
+		rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/anime/*"$ms"* ~/Movies/"$ms"
+	else
+		echo "Creating download directory..."
+		mkdir ~/Movies/"$ms"/
+		rsync -avz -r --progress /Volumes/Data/Shared/anime/__new_anime/*"$ms"* ~/Movies/"$ms"
+	fi
+}
+
+
+
+
 function oldSeriesList() {
 	echo "This is a list of series you already watched:"
 	echo ""
@@ -31,26 +61,6 @@ function newSeriesList() {
 	echo ""
 	ls /Volumes/Data/Shared/series/__new_series
 	read -p "Which series do you want to download?: " ms
-}
-function oldMoviesDownload() {
-	if [ -d ~/Movies/"$ms" ]; then
-		echo "Destination directory already exists downloading non-exsiting files..."
-		rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/movies/*"$ms"* ~/Movies/"$ms"
-	else
-		echo "Creating download directory..."
-		mkdir ~/Movies/"$ms"/
-		rsync -avz -r --progress /Volumes/Data/Shared/movies/*"$ms"* ~/Movies/"$ms"
-	fi
-}
-function newMovieDownload() {
-	if [ -d ~/Movies/"$ms" ]; then
-		echo "Destination directory already exists downloading non-exsiting files..."
-		rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/movies/__new_movies/*"$ms"* ~/Movies/"$ms"
-	else
-		echo "Creating download directory..."
-		mkdir ~/Movies/"$ms"/
-		rsync -avz -r --progress /Volumes/Data/Shared/movies/__new_movies/*"$ms"* ~/Movies/"$ms"
-	fi
 }
 function oldSeriesDownload() {
 	if [ -d ~/Movies/"$ms" ]; then
@@ -72,6 +82,43 @@ function newSeriesDownload() {
 		rsync -avz -r --progress /Volumes/Data/Shared/series/__new_series/*"$ms"* ~/Movies/"$ms"
 	fi
 }
+
+
+
+function oldMoviesList() {
+	echo "This is a list of movies you already watched:"
+	echo ""
+	ls /Volumes/Data/Shared/movies/
+	read -p "Which movie do you wish to download?: " ms
+}
+function newMoviesList() {
+	echo "This is a list of movies you haven't watched yet:"
+	echo ""
+	ls /Volumes/Data/Shared/movies/__new_movies
+	read -p "Which movie do you wish to download?: " ms
+}
+
+function oldMoviesDownload() {
+	if [ -d ~/Movies/"$ms" ]; then
+		echo "Destination directory already exists downloading non-exsiting files..."
+		rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/movies/*"$ms"* ~/Movies/"$ms"
+	else
+		echo "Creating download directory..."
+		mkdir ~/Movies/"$ms"/
+		rsync -avz -r --progress /Volumes/Data/Shared/movies/*"$ms"* ~/Movies/"$ms"
+	fi
+}
+function newMovieDownload() {
+	if [ -d ~/Movies/"$ms" ]; then
+		echo "Destination directory already exists downloading non-exsiting files..."
+		rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/movies/__new_movies/*"$ms"* ~/Movies/"$ms"
+	else
+		echo "Creating download directory..."
+		mkdir ~/Movies/"$ms"/
+		rsync -avz -r --progress /Volumes/Data/Shared/movies/__new_movies/*"$ms"* ~/Movies/"$ms"
+	fi
+}
+
 function oldVnewCheck() {
 	echo "Old or new entertainment?"
 	echo "[o] Old"
@@ -79,6 +126,7 @@ function oldVnewCheck() {
 	read -p "Choice: [o/n] " ovn
 }
 function listAndDownload() {
+	#Check for Movies category
 	if [[ "$category" == "1" ]]; then
 		oldVnewCheck
 		if [[ "$ovn" == "o" ]]; then
@@ -88,6 +136,7 @@ function listAndDownload() {
 			newMoviesList
 			newMovieDownload
 		fi
+	#Check for Series category
 	elif [[ "$category" == "2" ]]; then
 		oldVnewCheck
 		if [[ "$ovn" == "o" ]]; then
@@ -96,6 +145,17 @@ function listAndDownload() {
 		elif [[ "$ovn" == "n" ]]; then
 			newSeriesList
 			newSeriesDownload
+		fi
+	fi
+	#Check for Anime category
+	if [[ "$category" == "3" ]]; then
+		oldVnewCheck
+		if [[ "$ovn" == "o" ]]; then
+			oldAnimeList
+			oldAnimeDownload
+		elif [[ "$ovn" == "n" ]]; then
+			newAnimeList
+			newAnimeDownload
 		fi
 	fi
 }
