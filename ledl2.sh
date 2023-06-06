@@ -3,34 +3,29 @@
 #Code can be used freely as long as I am credited
 #Rewrite of ledl.sh to optimize linecount and readeability
 function list {
+    echo "This is a list of" "$category" "that is available:"
+    echo ""
     case "$type" in
-    o)
-        echo "This is a list of" "$category" "that is available:"
-        echo ""
-        ls /Volumes/Data/Shared/"$category"
-        read -p "Which ""$category"" do you wish to download?: " title ;;
-    n)
-        echo "This is a list of" "$category" "that is available:"
-        echo ""
-        ls /Volumes/Data/Shared/__new_"$category"
-        read -p "Which ""$category"" do you wish to download?: " title ;;
-    q) echo "Bye!" ;; 
+    o) ls /Volumes/Data/Shared/"$category" ;;
+    n) ls /Volumes/Data/Shared/__new_"$category" ;;
+    q) echo "Bye!" ;;
     esac
+    read -p "Which $category do you wish to download?: " title
 }
 function download {
     if [ "$type" == "o" ]; then
-        if [ -d ~/"$category"/"$title" ]; then
-            echo "Destination directory already exists downloading non-exsiting files..."
-            rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/"$category"/*"$title"* ~/Movies/"$title"
+        if [ -d ~/Movies/"$title" ]; then
+            echo "Destination directory already exists downloading non-existing files..."
+            rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/"$category"/*$title* ~/Movies/"$title"
         else
             echo "Creating download directory..."
             mkdir ~/"$category"/"$title"/
-            rsync -avz -r --progress /Volumes/Data/Shared/"$category"/"$category"/*"$title"* ~/Movies/"$title"
+            rsync -avz -r --progress /Volumes/Data/Shared/"$category"/"$category"/*$title* ~/Movies/"$title"
         fi
     elif [ "$type" == "n" ]; then
-        if [ -d ~/"$category"/"$title" ]; then
-            echo "Destination directory already exists downloading non-exsiting files..."
-            rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/__new_"$category"/*"$title"* ~/Movies/"$title"
+        if [ -d ~/Movies/"$title" ]; then
+            echo "Destination directory already exists downloading non-existing files..."
+            rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/__new_"$category"/*$title* ~/Movies/"$title"
         else
             echo "Creating download directory..."
             mkdir ~/"$category"/"$title"/
