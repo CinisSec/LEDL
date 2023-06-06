@@ -1,5 +1,6 @@
 #!/bin/bash
 #LEDL - Local Entertainment Downloader
+#Code can be used freely as long as I am credited
 
 #FUNCTIONS SECTION START
 function categoryChoice() {
@@ -9,9 +10,7 @@ function categoryChoice() {
 	echo "[3] anime"
 	read -p "Category choice: [1-2]" category
 }
-
-
-
+#SECTIION START ANIME
 function oldAnimeList() {
 	echo "This is a list of anime that is available:"
 	echo ""
@@ -46,10 +45,10 @@ function newAnimeDownload () {
 		rsync -avz -r --progress /Volumes/Data/Shared/anime/__new_anime/*"$ms"* ~/Movies/"$ms"
 	fi
 }
+#SECTIION END ANIME
 
 
-
-
+#SECTIION START SERIES
 function oldSeriesList() {
 	echo "This is a list of series you already watched:"
 	echo ""
@@ -82,9 +81,10 @@ function newSeriesDownload() {
 		rsync -avz -r --progress /Volumes/Data/Shared/series/__new_series/*"$ms"* ~/Movies/"$ms"
 	fi
 }
+#SECTIION END SERIES
 
 
-
+#SECTIION START MOVIES
 function oldMoviesList() {
 	echo "This is a list of movies you already watched:"
 	echo ""
@@ -118,6 +118,7 @@ function newMovieDownload() {
 		rsync -avz -r --progress /Volumes/Data/Shared/movies/__new_movies/*"$ms"* ~/Movies/"$ms"
 	fi
 }
+#SECTIION END MOVIES
 
 function oldVnewCheck() {
 	echo "Old or new entertainment?"
@@ -162,7 +163,7 @@ function listAndDownload() {
 #FUNCTIONS SECTION END
 
 #MAIN SECTION START
-	if [ -d "/Volumes/Data/Shared" ]; then
+if [ -d "/Volumes/Data/Shared" ]; then
 	categoryChoice
 	listAndDownload
 else
