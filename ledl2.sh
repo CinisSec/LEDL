@@ -15,23 +15,9 @@ function list {
 }
 function download {
     if [ "$type" == "o" ]; then
-        if [ -d ~/Movies/"$title" ]; then
-            echo "Destination directory already exists downloading non-existing files..."
-            rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/"$category"/*$title* ~/Movies/"$title"
-        else
-            echo "Creating download directory..."
-            mkdir ~/"$category"/"$title"/
-            rsync -avz -r --progress /Volumes/Data/Shared/"$category"/"$category"/*$title* ~/Movies/"$title"
-        fi
+        rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/"$category"/*$title* ~/Movies/"$title"
     elif [ "$type" == "n" ]; then
-        if [ -d ~/Movies/"$title" ]; then
-            echo "Destination directory already exists downloading non-existing files..."
-            rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/"$category"/__new_"$category"/*$title* ~/Movies/"$title"
-        else
-            echo "Creating download directory..."
-            mkdir ~/"$category"/"$title"/
-            rsync -avz -r --progress /Volumes/Data/Shared/"$category"/__new_"$category"/*$title* ~/Movies/"$title"
-        fi
+        rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/"$category"/__new_"$category"/*$title* ~/Movies/"$title"
     else return 0
     fi
 }
@@ -48,10 +34,7 @@ function categoryChoice {
     esac
 }
 function oldvnew {
-    echo "Do you wish to look at old or new entertainment?"
-    echo "[o] old"
-    echo "[n] new"
-    read -p "Type choiche: [o/n]" type
+    read -n1 -p "Old or new entertainment? [o/n] " type
 }
 #MAIN SECTION START
 #Check if volume is mounted and run functions else print error
