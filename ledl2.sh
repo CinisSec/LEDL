@@ -4,11 +4,12 @@
 #Rewrite of ledl.sh to optimize linecount and readeability
 function list {
     echo "This is a list of" "$category" "that is available:"
-    echo ""
+    echo ""§
     case "$type" in
     o) ls /Volumes/Data/Shared/"$category" ;;
-    n) ls /Volumes/Data/Shared/__new_"$category" ;;
+    n) ls /Volumes/Data/Shared/"$category"/__new_"$category" ;;
     q) echo "Bye!" ;;
+    *) echo "Invalid choice" && list ;;
     esac
     read -p "Which $category do you wish to download?: " title
 }
@@ -25,7 +26,7 @@ function download {
     elif [ "$type" == "n" ]; then
         if [ -d ~/Movies/"$title" ]; then
             echo "Destination directory already exists downloading non-existing files..."
-            rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/__new_"$category"/*$title* ~/Movies/"$title"
+            rsync -avz -r --ignore-existing --progress /Volumes/Data/Shared/"$category"/__new_"$category"/*$title* ~/Movies/"$title"
         else
             echo "Creating download directory..."
             mkdir ~/"$category"/"$title"/
@@ -53,6 +54,7 @@ function oldvnew {
     read -p "Type choiche: [o/n]" type
 }
 #MAIN SECTION START
+#Check if volume is mounted and run functions else print error
 if [ -d "/Volumes/Data/Shared" ]; then
     categoryChoice
     oldvnew
